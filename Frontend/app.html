@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TransitOps – Smart Transport Operations Platform. Manage vehicles, drivers, maintenance, fuel, and expenses." />
+  <title>TransitOps – Smart Transport Operations Platform</title>
+
+  <!-- Stylesheets (order matters) -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+</head>
+<body>
+  <!-- App Shell (Sidebar + Main) -->
+  <div class="app-shell" id="app-shell">
+    <!-- Sidebar & Header are injected by JS -->
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ===== Core Scripts (order matters) ===== -->
+  <!-- Config & Constants -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/constants.js"></script>
+
+  <!-- Services -->
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/utils.js"></script>
+
+  <!-- Reusable Components -->
+  <script src="assets/components/sidebar.js"></script>
+  <script src="assets/components/header.js"></script>
+  <script src="assets/components/toast.js"></script>
+  <script src="assets/components/loader.js"></script>
+  <script src="assets/components/modal.js"></script>
+  <script src="assets/components/confirm-dialog.js"></script>
+  <script src="assets/components/badges.js"></script>
+  <script src="assets/components/table.js"></script>
+
+  <!-- Router -->
+  <script src="assets/js/router.js"></script>
+
+  <!-- Page Modules -->
+  <script src="assets/pages/vehicles.js"></script>
+  <script src="assets/pages/drivers.js"></script>
+  <script src="assets/pages/maintenance.js"></script>
+  <script src="assets/pages/fuel.js"></script>
+  <script src="assets/pages/expenses.js"></script>
+
+  <!-- App Initialization -->
+  <script>
+    (function initApp() {
+      // Guard: require authentication
+      if (!Auth.requireAuth()) return;
+
+      const shell = document.getElementById('app-shell');
+
+      // Render layout (sidebar + main content area)
+      shell.innerHTML = `
+        ${Sidebar.render()}
+        <div class="main-content">
+          ${Header.render()}
+          <main class="page-content" id="page-content">
+            <!-- Pages are injected here by the Router -->
+          </main>
+        </div>
+      `;
+
+      // Initialize layout components
+      Sidebar.init();
+      Header.init();
+
+      // Register all page routes
+      // NOTE: Dashboard, Trips, Reports, and Settings are handled by the other developer.
+      //       We register placeholder routes so the sidebar links don't break.
+
+      Router.register('dashboard', {
+        title: 'Dashboard',
+        template: '<div class="empty-state"><div class="empty-state-icon">📊</div><div class="empty-state-title">Dashboard</div><div class="empty-state-text">This page is under development by another team member.</div></div>',
+        init: () => {},
+      });
+
+      Router.register('trips', {
+        title: 'Trips',
+        template: '<div class="empty-state"><div class="empty-state-icon">🗺️</div><div class="empty-state-title">Trips</div><div class="empty-state-text">This page is under development by another team member.</div></div>',
+        init: () => {},
+      });
+
+      Router.register('reports', {
+        title: 'Reports',
+        template: '<div class="empty-state"><div class="empty-state-icon">📈</div><div class="empty-state-title">Reports</div><div class="empty-state-text">This page is under development by another team member.</div></div>',
+        init: () => {},
+      });
+
+      Router.register('settings', {
+        title: 'Settings',
+        template: '<div class="empty-state"><div class="empty-state-icon">⚙️</div><div class="empty-state-title">Settings</div><div class="empty-state-text">This page is under development by another team member.</div></div>',
+        init: () => {},
+      });
+
+      // YOUR pages (register these — page JS files define the templates & init functions)
+      if (typeof VehiclesPage !== 'undefined') {
+        Router.register('vehicles', {
+          title: 'Vehicles',
+          template: VehiclesPage.template(),
+          init: VehiclesPage.init,
+        });
+      }
+
+      if (typeof DriversPage !== 'undefined') {
+        Router.register('drivers', {
+          title: 'Drivers',
+          template: DriversPage.template(),
+          init: DriversPage.init,
+        });
+      }
+
+      if (typeof MaintenancePage !== 'undefined') {
+        Router.register('maintenance', {
+          title: 'Maintenance',
+          template: MaintenancePage.template(),
+          init: MaintenancePage.init,
+        });
+      }
+
+      if (typeof FuelPage !== 'undefined') {
+        Router.register('fuel', {
+          title: 'Fuel Logs',
+          template: FuelPage.template(),
+          init: FuelPage.init,
+        });
+      }
+
+      if (typeof ExpensesPage !== 'undefined') {
+        Router.register('expenses', {
+          title: 'Expenses',
+          template: ExpensesPage.template(),
+          init: ExpensesPage.init,
+        });
+      }
+
+      // Start the router
+      Router.init('#page-content', 'dashboard');
+    })();
+  </script>
+</body>
+</html>
