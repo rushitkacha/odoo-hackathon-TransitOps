@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TransitOps Smart Transport Operations Platform">
+  <title>TransitOps</title>
+  <link rel="stylesheet" href="assets/css/base.css"><link rel="stylesheet" href="assets/css/layout.css"><link rel="stylesheet" href="assets/css/components.css"><link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+  <div class="app-shell" id="app-shell"></div><div class="toast-container" id="toast-container"></div>
+  <script src="assets/js/config.js"></script><script src="assets/js/utils.js"></script><script src="assets/js/constants.js"></script><script src="assets/js/state.js"></script><script src="assets/js/auth.js"></script><script src="assets/js/mock-api.js"></script><script src="assets/js/api.js"></script><script src="assets/js/page-helpers.js"></script>
+  <script src="assets/components/sidebar.js"></script><script src="assets/components/header.js"></script><script src="assets/components/toast.js"></script><script src="assets/components/loader.js"></script><script src="assets/components/modal.js"></script><script src="assets/components/confirm-dialog.js"></script><script src="assets/components/badges.js"></script><script src="assets/components/table.js"></script><script src="assets/js/router.js"></script>
+  <script src="assets/pages/dashboard.js"></script><script src="assets/pages/vehicles.js"></script><script src="assets/pages/drivers.js"></script><script src="assets/pages/trips.js"></script><script src="assets/pages/maintenance.js"></script><script src="assets/pages/fuel.js"></script><script src="assets/pages/expenses.js"></script><script src="assets/pages/reports.js"></script><script src="assets/pages/settings.js"></script>
+  <script>
+    (function(){if(!Auth.requireAuth())return;const shell=document.getElementById('app-shell');shell.innerHTML=`${Sidebar.render()}<div class="main-content">${Header.render()}<main class="page-content" id="page-content"></main></div>`;Sidebar.init();Header.init();
+      [['dashboard','Dashboard',DashboardPage],['vehicles','Vehicles',VehiclesPage],['drivers','Drivers & Safety',DriversPage],['trips','Trips & Dispatch',TripsPage],['maintenance','Maintenance',MaintenancePage],['fuel','Fuel Logs',FuelPage],['expenses','Expenses',ExpensesPage],['reports','Reports & Analytics',ReportsPage],['settings','Settings & Roles',SettingsPage]].forEach(([route,title,page])=>Router.register(route,{title,template:page.template,init:page.init}));Router.init('#page-content','dashboard');})();
+  </script>
+</body></html>
